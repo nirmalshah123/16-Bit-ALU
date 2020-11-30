@@ -23,11 +23,19 @@ architecture Behavioural of FastAdder is
 	signal	CPA,CPB		:	std_logic_vector(15 downto 0);		--Level C defined It's G and P are defined
 	signal	CPC,CPD		:	std_logic_vector(15 downto 0);		--Level D defined It's G and P are defined
 	signal	Cout			:	std_logic_vector(15 downto 0);		--Final Carry generated
+	signal   xor_op		:	std_logic_vector(15 downto 0);
+	
+	component XOR16 is
+	port (a 	: in 	std_logic_vector(15 downto 0);
+		b	: in 	std_logic_vector(15 downto 0);
+		o	: out std_logic_vector(15 downto 0));
+	end component;
+	
 	
 	begin
-
+	xor_instance : XOR16 port map(a =>P, b=>Cout, o=>xor_op);
 		
-		process(G,P,CGA,CGB,CGC,CGD,CPA,CPB,CPC,CPD,A,B,Cout)
+		process(G,P,CGA,CGB,CGC,CGD,CPA,CPB,CPC,CPD,A,B,Cout,xor_op)
 		
 		begin
 		
@@ -77,11 +85,10 @@ architecture Behavioural of FastAdder is
 			Cout(0)<='0';
 			
 			levelE:for i in 0 to 14 loop								-- Calculation of Cout = Gi + Pi.Ci
-				Cout(i+1)<=(Cout(0) and CPD(i)) or CGD(i);
+				Cout(i+1)<=(Cout(i) and CPD(i)) or CGD(i);
 			end loop levelE ;
 			
-			
-			op<=P xor Cout;												--final ans is P XOR Cout
+			op<=xor_op;												--final ans is P XOR Cout
 			Carry<=Cout(15);
 			
 			
