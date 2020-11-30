@@ -7,7 +7,7 @@ port(
 	A:in std_logic_vector(15 downto 0);
 	B:in std_logic_vector(15 downto 0);
 	
-	
+	ZCout:out std_logic_vector(15 downto 0);
 	Z:out std_logic_vector(15 downto 0)
 	
 );
@@ -78,6 +78,7 @@ architecture Behavioural of FastAdder is
 			
 			
 			Z<=P xor Cout;
+			ZCout<=Cout;
 			
 			
 		end process;

@@ -6,19 +6,20 @@ end FastAdder_tb;
 architecture tb of FastAdder_tb is
 
 	signal x, y : std_logic_vector(15 downto 0); -- inputs
-	signal o: std_logic_vector(15 downto 0); -- outputs
+	signal o: std_logic_vector(15 downto 0);
+	signal oCout: std_logic_vector(15 downto 0);	-- outputs
 	
 	
 	component FastAdder  is
 	port(A, B: in std_logic_vector(15 downto 0);
-	Z: out std_logic_vector(15 downto 0));
+	Z,ZCout: out std_logic_vector(15 downto 0));
 	end component;
 	begin
 
 
 dut_instance: FastAdder
 
-	port map (A => x, B => y, Z => o);
+	port map (A => x, B => y, Z => o, ZCout=> oCout);
 	
 	process-- inputs
 	
