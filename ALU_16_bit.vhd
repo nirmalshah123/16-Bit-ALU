@@ -5,14 +5,17 @@ use IEEE.numeric_std.all;
 entity ALU_16_bit is
 port (A,B 	: in std_logic_vector(15 downto 0);						-- A,B are inputs
 		sel	: in std_logic_vector(1 downto 0);						-- control pins for MUX
-		Carry : out std_logic;												-- Carry
+		Carry_final : out std_logic := '0';								-- Carry
 		op 	: buffer std_logic_vector(15 downto 0);				-- 16 bit output
-		z 		: out std_logic);												-- set to 1 if output=0
+		z 		: out std_logic := '0');									-- set to 1 if output=0
 end ALU_16_bit;
 
 architecture ALU of ALU_16_bit is
-signal nand_op,xor_op,add_op : std_logic_vector(15 downto 0);
-signal carry_op : std_logic;
+signal nand_op,xor_op,add_op,sub_op				: std_logic_vector(15 downto 0);
+signal carry_add_op,carry_sub_op 								: std_logic;
+
+signal B_2_compliment,B_1_compliment 	: std_logic_vector(15 downto 0);
+
 	component FastAdder is
 	port(
 	A		:in std_logic_vector(15 downto 0);				--Input A
@@ -35,19 +38,29 @@ signal carry_op : std_logic;
 	end component;
 
 begin
+
+B_1_compliment <= NOT(B);
+B_2_compliment <= std_logic_vector(signed(B_1_compliment) + 1);
 nand_instance : NAND16 port map(a => A, b =>B, o =>nand_op);
 xor_instance  : XOR16  port map(a => A, b =>B, o =>xor_op);
-FastAdder_instance : FastAdder port map(A =>A,B=>B,Carry =>carry_op, op=>add_op);
-	process(A,B,sel,op)
+FastAdder_instance : FastAdder port map(A =>A,B=>B,Carry =>carry_add_op, op=>add_op);
+Subtract_instance	 : FastAdder port map(A =>A,B=>B_2_compliment,Carry =>carry_sub_op, op=>sub_op);
+
+	process(A,B,sel,op,add_op,sub_op,carry_add_op,carry_sub_op,nand_op,xor_op)
 		begin
 
-			case sel is 
-			when "00" 	=> op<= add_op;
-			when "01" 	=> null;
-			when "10" 	=> op <= nand_op;
-			when "11" 	=> op <= xor_op;
-			when others => null;
-			end case;
+			if sel="00" then
+				op<= add_op;
+				Carry_final<=carry_add_op;
+			elsif sel="01" then
+				op<=sub_op;
+				Carry_final<=carry_sub_op;
+			elsif sel="10" then
+				op <= nand_op;
+			else
+			op <= xor_op;
+
+			end if;
 		
 		if (op = "0000000000000000") then			  		-- setting z flag to 1 if output is 0
 		z <= '1';
