@@ -1,5 +1,6 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.numeric_std.ALL;
 entity FastAdder_tb is
 end FastAdder_tb;
 
@@ -26,12 +27,25 @@ dut_instance: FastAdder
 	
 	process-- inputs
 	
-	begin
-	x <= "0111111111111111";
-	y <= "0111111111111111";
+	begin 
 	
-	wait for 10 ns;
-	
+	for m in 0 to 255 loop 
+		
+		
+		x <= std_logic_vector(to_SIGNED(m,16)); 
+		
+			for n in 0 to 255 loop 
+			
+				y <= std_logic_vector(to_SIGNED(n,16)); 
+				
+				wait for 1 ns; 
+				
+				assert (to_integer(SIGNED(o)) = (m + n)) 
+				report "Incorrect sum" severity failure;
+				
+				
+			end loop; 
+		end loop; 
 	
 	
 	end process;
