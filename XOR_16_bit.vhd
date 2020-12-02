@@ -2,13 +2,13 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
 entity XOR16 is
-port (a 	: in 	std_logic_vector(15 downto 0);
-		b	: in 	std_logic_vector(15 downto 0);
+port (a 	: in 	std_logic_vector(15 downto 0);			--a,b input
+		b	: in 	std_logic_vector(15 downto 0);			-- o ouput
 		o	: out std_logic_vector(15 downto 0));
 end XOR16;
 
 architecture arc of XOR16 is
-begin
+begin																	-- Bitwise XOR
 
 o(15)   <=  a(15)   XOR    b(15);
 o(14)   <=  a(14)   XOR    b(14);
