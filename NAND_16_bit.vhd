@@ -2,13 +2,13 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
 entity NAND16 is
-port (a 	: in 	std_logic_vector(15 downto 0);
+port (a 	: in 	std_logic_vector(15 downto 0);		-- a,b inputs
 		b	: in 	std_logic_vector(15 downto 0);
-		o	: out std_logic_vector(15 downto 0));
+		o	: out std_logic_vector(15 downto 0));		-- o Output
 end NAND16;
 
-architecture arc of NAND16 is
-begin
+architecture arc of NAND16 is			
+begin													-- Bitwise Nand 
 o(15)   <=  a(15)   NAND    b(15);
 o(14)   <=  a(14)   NAND    b(14);
 o(13)   <=  a(13)   NAND    b(13);
