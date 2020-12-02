@@ -6,7 +6,7 @@ entity FastAdder is
 port(
 	A		:in std_logic_vector(15 downto 0);				--Input A
 	B		:in std_logic_vector(15 downto 0);				--Input B
-	Carry	:out std_logic_vector(15 downto 0);				--Final carry
+	Carry	:out std_logic;										--Final carry
 	op		:out std_logic_vector(15 downto 0)				--Output		
 	
 );
@@ -27,8 +27,8 @@ architecture Behavioural of FastAdder is
 	
 	component XOR16 is
 	port (a 	: in 	std_logic_vector(15 downto 0);
-		b	: in 	std_logic_vector(15 downto 0);
-		o	: out std_logic_vector(15 downto 0));
+			b	: in 	std_logic_vector(15 downto 0);
+			o	: out std_logic_vector(15 downto 0));
 	end component;
 	
 	
@@ -88,8 +88,8 @@ architecture Behavioural of FastAdder is
 				Cout(i+1)<=(Cout(0) and CPD(i)) or CGD(i);
 			end loop levelE ;
 			
-			op<=xor_op;												--final ans is P XOR Cout
-			Carry<=Cout;
+			op<=xor_op;														--final ans is P XOR Cout
+			Carry<=CGD(15);
 			
 			
 		end process;
