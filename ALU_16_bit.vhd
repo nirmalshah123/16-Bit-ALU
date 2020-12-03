@@ -1,3 +1,7 @@
+--======================================================================================================================
+--------------------- Owners :-|| **Nirmal Shah**	||------------------------------------------------------------------------
+-------------------------------|| **Puranjay Datta*||------------------------------------------------------------------------
+--======================================================================================================================
 library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
@@ -49,7 +53,7 @@ Subtract_instance	 : FastAdder port map(A =>A,B=>B_2_compliment,Carry =>carry_su
 	process(A,B,sel,op,add_op,sub_op,carry_add_op,carry_sub_op,nand_op,xor_op)
 		begin
 																								-- -------------------------------
-			if sel="00" then																-- |Selection line || Operation	|
+			if sel="00" then																-- |Selection line|| Operation	|
 				op<= add_op;																--	|		00			||		A + B		|
 				Carry_final<=carry_add_op;												--	|		01			||		A - B		|
 			elsif sel="01" then															--	|		10			||		(A.B)'	|
